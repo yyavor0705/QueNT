@@ -1,8 +1,8 @@
-from django.conf.urls import url
 from django.urls import path
-from .views import index, company_page
+from .views import index, company_page, company_add
 
 urlpatterns = [
-    url(r'^$', index),
+    path('', index, name='index'),
     path('company/<int:id>', company_page, name='company-page'),
+    path('company/add', company_add, name='company-add'),
 ]

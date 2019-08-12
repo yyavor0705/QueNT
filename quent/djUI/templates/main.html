@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ company.name }}</h5>
                         {% url 'company-page' company.id as target_company %}
-                        <a href="company/{{ company.id }}">Details</a>
+                        <a href={{ target_company }}>Details</a>
                     </div>
                 </div>
             </div>
