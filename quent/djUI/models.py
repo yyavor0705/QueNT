@@ -1,5 +1,6 @@
 from django.db import models
 from .custom_duration import Duration
+from django.contrib.auth.models import AbstractUser
 
 
 class Company(models.Model):
@@ -28,18 +29,28 @@ class JobType(models.Model):
         return "{} ({})".format(self.title, self.company)
 
 
+class UserProfile(AbstractUser):
+    is_admin = models.BooleanField(default=False)
+    is_worker = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "User profile"
+
+    def __str__(self):
+        return self.username
+
+
 class Worker(models.Model):
-    email = models.EmailField(unique=True, primary_key=True)
-    name = models.CharField(max_length=250)
+    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     photo = models.FileField(blank=True)
-    job_type = models.ManyToManyField(JobType)
+    job_types = models.ManyToManyField(JobType)
 
     class Meta:
         verbose_name = "Worker"
 
     def __str__(self):
-        return self.name
+        return self.user_profile.username
 
 
 class ScheduledJob(models.Model):
