@@ -1,11 +1,36 @@
-from django.urls import path
-from .views import index, company_page, company_add, user_add, logout_view, login_view
+from django.urls import path, include
+from .views import index, company_page, company_add, user_add, logout_view, login_view, worker_add
+
+
+user_url = [
+    #path('<int:id>'),
+    path('add/', user_add, name="user-add"),
+    #path('delete/<int:id>', worker_add, "user-delete"),
+    #path('update/<int:id>', worker_add, "user-update"),
+]
+
+
+worker_url = [
+    #path('<int:id>'),
+    path('add', worker_add, name="worker-add"),
+    #path('delete/<int:id>', worker_add, "worker-delete"),
+    #path('update/<int:id>', worker_add, "worker-update"),
+]
+
+
+company_url = [
+    path('<int:id>', company_page, name="company-page"),
+    path('add', company_add, name="company-add"),
+    #path('delete/<int:id>', worker_add, "company-delete"),
+    #path('update/<int:id>', worker_add, "company-update"),
+    path('<int:company_id>/worker/', include(worker_url))
+]
+
 
 urlpatterns = [
     path('', index, name='index'),
-    path('company/<int:id>', company_page, name='company-page'),
-    path('company/add', company_add, name='company-add'),
     path('login', login_view, name='login'),
     path('logout', logout_view, name='logout'),
-    path('user/add', user_add, name='register_user'),
+    path('company/', include(company_url)),
+    path('user/', include(user_url)),
 ]

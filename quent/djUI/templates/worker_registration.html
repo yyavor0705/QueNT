@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
-{# Load the tag library #}
 {% load bootstrap4 %}
 
 {% block content %}
+    Provide user info:
     <form method="POST">
-        {% bootstrap_form form layout='inline' %}
+        {% bootstrap_form user_profile_form layout='inline' %}
+        {% bootstrap_form worker_form layout='inline' %}
         {% csrf_token %}
         <input type="submit" class="btn btn-primary" value="Submit">
     </form>
