@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 
@@ -99,4 +99,25 @@ def worker_add(request, company_id):
         "user_profile_form": new_user_form,
         "worker_form": new_worker_form
     })
+
+
+def company_schedules_view(request, company_id, year, month, day):
+    json_data = {}
+    company_workers = Worker.objects.filter(company__pk=company_id)
+    for worker in company_workers:
+        worker_jobs = ScheduledJob.objects.filter(start_date_time__day=day, start_date_time__month=month,
+                                                  start_date_time__year=year)
+        json_jobs = {}
+        for job in worker_jobs:
+            json_jobs["job_{}".format(job.pk)] = {
+                "start_time": job.start_date_time.time(),
+                "duration": int(job.job_type.duration.total_seconds()/60),
+                "color": job.job_type.hex_color
+            }
+        json_data["worker_{}".format(worker.pk)] = {
+            "jobs": json_jobs
+        }
+    return JsonResponse(json_data)
+
+
 

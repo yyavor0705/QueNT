@@ -1,0 +1,30 @@
+#worker-time-line {
+    border-width: 1px;
+    border-color: gray;
+    border-style: dotted;
+    display: grid;
+    grid-template-columns: repeat(1440, 1fr);
+}
+
+.job1 {
+    grid-column: 1 / span 60;
+    background-color: chartreuse;
+}
+
+.job2 {
+    grid-column-start: 70;
+    grid-column-end: 90;
+    background-color: fuchsia;
+}
+
+.job3 {
+    grid-column-start: 120;
+    grid-column-end: 150;
+    background-color: red;
+}
+
+.job4 {
+    grid-column-start: 500;
+    grid-column-end: 550;
+    background-color: green;
+}
